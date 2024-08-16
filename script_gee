@@ -1,7 +1,10 @@
-//Map.addLayer(image)
+Map.addLayer(image)
+//essa parte faça apenas se não for retirada a banda nula
+//
 var bg = image.lt(255);
 var remove = image.updateMask(bg);
 Map.addLayer(remove);
+//
 var img = ee.Image('projects/ee-vegelepinheiro2/assets/Orto-DG');
 var amostra = edificacao.merge(pavimento).merge(vegetacao).merge(vegetacao_arvore).merge(descampado);
 var bandas = ['b1','b2','b3'];
