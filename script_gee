@@ -21,3 +21,11 @@ var classificacao = ee.Classifier.smileCart().train({
 var classificacao = img.classify(classificacao);
 Map.addLayer(classificacao,{min:0, max:4,palette:['red','gray','green','yellow','white']},
 'classificacao');
+
+//Para exportar projeto
+Export.image.toDrive({
+  image:classificacao,
+  description:'class',
+  scale:0.03,
+  maxPixels: 10000000000,
+});
