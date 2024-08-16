@@ -1,0 +1,20 @@
+//Map.addLayer(image)
+var bg = image.lt(255);
+var remove = image.updateMask(bg);
+Map.addLayer(remove);
+var img = ee.Image('projects/ee-vegelepinheiro2/assets/Orto-DG');
+var amostra = edificacao.merge(pavimento).merge(vegetacao).merge(vegetacao_arvore).merge(descampado);
+var bandas = ['b1','b2','b3'];
+var treinamento = img.select(bandas).sampleRegions({
+  collection: amostra,
+  properties:['class'],
+  scale: 0.01,
+});
+var classificacao = ee.Classifier.smileCart().train({
+  features:treinamento,
+  classProperty:'class',
+  inputProperties:['b1','b2','b3'],
+});
+var classificacao = img.classify(classificacao);
+Map.addLayer(classificacao,{min:0, max:4,palette:['red','gray','green','yellow','white']},
+'classificacao');
